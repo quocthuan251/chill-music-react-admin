@@ -1,12 +1,51 @@
-#components-layout-demo-fixed-sider .logo {
-	height: 32px;
-	background: rgba(255, 255, 255, 0.2);
-	margin: 16px;
-}
 .site-layout .site-layout-background {
 	background: #fff;
 }
-.layout-logo-admin {
-	height: 70px;
-	background-color: #121212;
+.logo {
+	height: 64px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.logo-img {
+	width: 10rem;
+	filter: 'black';
+}
+.layout-slider {
+	box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
+	width: 200px;
+	display: flex;
+	flex-direction: column;
+}
+
+.layout-item-sidebar {
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	margin-top: 4px;
+	margin-bottom: 4px;
+	padding: 0 16px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	cursor: pointer;
+	color: #000000;
+}
+.layout-item-sidebar-selected {
+	background-color: rgb(160, 233, 233);
+	display: inline-block;
+	color: #1890ff;
+}
+.layout-item-sidebar-selected :hover {
+	color: #000000;
+}
+.layout-sidebar-item-icon {
+	margin-right: 6px;
+}
+.site-layout .site-layout-header {
+	background: #fff;
+	line-height: 48px;
+	/* display: flex; */
+	/* justify-content: flex-end; */
+	/* height: 100%; */
+	/* padding: 0 55px; */
 }

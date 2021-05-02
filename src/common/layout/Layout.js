@@ -11,7 +11,10 @@ import {
 	UploadOutlined,
 	VideoCameraOutlined,
 } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
+import logo from '../../assets/logo.svg';
+import HeaderGlobal from '../HeaderGlobal';
+// import logo1 from '../../assets/logo1.png';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -29,60 +32,104 @@ class MainLayout extends React.Component {
 
 		return (
 			<Layout>
-				<Sider
+				<div
+					className="layout-slider"
 					style={{
 						overflow: 'auto',
 						height: '100vh',
 						position: 'fixed',
 						left: 0,
+						backgroundColor: 'white',
 					}}
 				>
-					<div className="logo" />
-					<Menu
-						theme="dark"
-						mode="inline"
-						defaultSelectedKeys={['5']}
+					<div className="logo">
+						<Link to="">
+							<img src={logo} alt="" className="logo-img" />
+						</Link>
+					</div>
+					<NavLink
+						className="layout-item-sidebar"
+						activeClassName="layout-item-sidebar-selected"
+						exact
+						to="/"
 					>
-						<div className="layout-logo-admin"></div>
-						<Menu.Item key="1" icon={<BarChartOutlined />}>
-							<Link to="/">Dash board</Link>
-						</Menu.Item>
-						<Menu.Item key="2" icon={<VideoCameraOutlined />}>
-							<Link to="/admin/song-management">
-								Quản lý bài hát
-							</Link>
-						</Menu.Item>
-						<Menu.Item key="3" icon={<TeamOutlined />}>
-							<Link to="/admin/singer-management">
-								Quản lý ca sỹ
-							</Link>
-						</Menu.Item>
-						<Menu.Item key="4" icon={<CloudOutlined />}>
-							<Link to="/admin/album-management">
-								Quản lý album
-							</Link>
-						</Menu.Item>
-						<Menu.Item key="5" icon={<UserOutlined />}>
-							<Link to="/admin/user-management">
-								Quản lý user
-							</Link>
-						</Menu.Item>
-						<Menu.Item key="6" icon={<AppstoreOutlined />}>
-							<Link to="/admin/">Quản lý bài viết</Link>
-						</Menu.Item>
-						<Menu.Item key="7" icon={<UploadOutlined />}>
-							<Link to="/admin/">Quản lý tài nguyên</Link>
-						</Menu.Item>
-						<Menu.Item key="8" icon={<ShopOutlined />}>
-							<Link to="/admin/log-action">Log action</Link>
-						</Menu.Item>
-					</Menu>
-				</Sider>
+						<BarChartOutlined className="layout-sidebar-item-icon" />
+						Dash board
+					</NavLink>
+
+					<NavLink
+						className="layout-item-sidebar"
+						activeClassName="layout-item-sidebar-selected"
+						exact
+						to="/admin/song-management"
+					>
+						<VideoCameraOutlined className="layout-sidebar-item-icon" />
+						Quản lý bài hát
+					</NavLink>
+					<NavLink
+						className="layout-item-sidebar"
+						activeClassName="layout-item-sidebar-selected"
+						exact
+						to="/admin/singer-management"
+					>
+						<TeamOutlined className="layout-sidebar-item-icon" />
+						Quản lý ca sỹ
+					</NavLink>
+
+					<NavLink
+						className="layout-item-sidebar"
+						activeClassName="layout-item-sidebar-selected"
+						exact
+						to="/admin/album-management"
+					>
+						<CloudOutlined className="layout-sidebar-item-icon" />
+						Quản lý album
+					</NavLink>
+					<NavLink
+						className="layout-item-sidebar"
+						activeClassName="layout-item-sidebar-selected"
+						exact
+						to="/admin/user-management"
+					>
+						<UserOutlined className="layout-sidebar-item-icon" />
+						Quản lý user
+					</NavLink>
+					<NavLink
+						className="layout-item-sidebar"
+						activeClassName="layout-item-sidebar-selected"
+						exact
+						to="/admin/"
+					>
+						<AppstoreOutlined className="layout-sidebar-item-icon" />
+						Quản lý bài viết
+					</NavLink>
+					<NavLink
+						className="layout-item-sidebar"
+						activeClassName="layout-item-sidebar-selected"
+						exact
+						to="/admin/"
+					>
+						<UploadOutlined className="layout-sidebar-item-icon" />
+						Quản lý tài nguyên
+					</NavLink>
+					<NavLink
+						className="layout-item-sidebar"
+						activeClassName="layout-item-sidebar-selected"
+						exact
+						to="/admin/log-action"
+					>
+						<ShopOutlined className="layout-sidebar-item-icon" />
+						Log action
+					</NavLink>
+				</div>
+
 				<Layout className="site-layout" style={{ marginLeft: 200 }}>
 					<Header
-						className="site-layout-background"
-						style={{ padding: 0 }}
-					/>
+						className="site-layout-header"
+						style={{ padding: 0, height: 48 }}
+					>
+						<HeaderGlobal />
+					</Header>
 					<Content
 						style={{ margin: '24px 16px 0', overflow: 'initial' }}
 					>

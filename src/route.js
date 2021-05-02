@@ -26,7 +26,7 @@ const SingerEdit = lazy(() =>
 );
 const AddSinger = lazy(() => import('./components/singerManagement/AddSinger'));
 
-const Error404 = lazy(() => import('./common/errorPage/Error404'));
+const Error404 = lazy(() => import('./common/Exception/404'));
 const route = [
 	{
 		path: '/',
