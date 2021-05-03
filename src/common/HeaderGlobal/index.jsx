@@ -2,9 +2,9 @@ import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons
 import { Dropdown, Menu, Button } from 'antd'
 import React from 'react'
 import "./HeaderGlobal.css"
-import { Badge } from 'antd';
+import { Badge, Avatar } from 'antd';
 import { BellOutlined } from '@ant-design/icons';
-
+import {Link} from 'react-router-dom'
 function HeaderGlobal() {
     const menu = (
         <Menu>
@@ -15,7 +15,7 @@ function HeaderGlobal() {
                 Cài đặt
             </Menu.Item>
             <Menu.Item key="setting:3" icon={<LogoutOutlined />}>
-                Đăng xuất
+                <Link to="/admin/signin">Đăng xuất</Link>
             </Menu.Item>
         </Menu>
     )
@@ -28,7 +28,8 @@ function HeaderGlobal() {
             </div>
             <Dropdown overlay={menu} placement="bottomRight">
             <div className="header-button-hover">
-                <div > <SettingOutlined />Quốc Thuận</div>
+                <Avatar className="header-avatar" style={{marginRight: 5}} src="https://www.flaticon.com/svg/vstatic/svg/3135/3135715.svg?token=exp=1619952136~hmac=c96ef3e32d54e9cdc94e776e4746f855" />
+                <div>Quốc Thuận</div>
                 </div>
             </Dropdown>
             

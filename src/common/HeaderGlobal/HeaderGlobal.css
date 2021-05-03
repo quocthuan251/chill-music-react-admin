@@ -16,8 +16,15 @@
 	height: 100%;
 	/* margin: 0 20px 0 0; */
 	cursor: pointer;
-	padding: 0 10px;
+	padding: 0 20px;
+	display: flex;
+	justify-content: center;
+	flex-direction: row;
+	align-items: center;
 }
 .header-button-hover:hover {
 	background-color: rgb(228, 228, 214);
+}
+.header-avatar {
+	border: 1px solid rgb(206, 203, 203);
 }

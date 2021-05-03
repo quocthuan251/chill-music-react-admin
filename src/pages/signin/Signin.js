@@ -87,21 +87,18 @@ const Signin = (props) => {
 						>
 							<Checkbox>Remember me</Checkbox>
 						</Form.Item>
-
-						<a className="login-form-forgot" href="">
-							Forgot password
-						</a>
 					</Form.Item>
 
 					<Form.Item>
-						<Button
-							type="primary"
-							htmlType="submit"
-							className="login-form-button"
-						>
-							Log in
-						</Button>
-						Or <Link to="/register">register now!</Link>
+						<Link to="">
+							<Button
+								type="primary"
+								htmlType="submit"
+								className="login-form-button"
+							>
+								Đăng nhập
+							</Button>
+						</Link>
 					</Form.Item>
 				</Form>
 			</Card>
