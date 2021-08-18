@@ -28,6 +28,7 @@ class MainLayout extends React.Component {
 	}
 
 	render() {
+		console.log("test reload");
 		const children = this.props.children;
 
 		return (

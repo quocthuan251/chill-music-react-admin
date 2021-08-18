@@ -1,69 +1,82 @@
-import React from 'react';
-import { Table, Tag, Avatar, Image, Button, Tooltip } from 'antd';
-import { Popconfirm, message } from 'antd';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import { Table, Tag, Image } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { FileSearchOutlined, PlusOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
 import { getListSingerManager } from './action';
 import { Link } from 'react-router-dom';
+import { Popconfirm, message, Pagination } from 'antd';
 
-class SingerManagement extends React.Component {
-	constructor(props) {
-		super(props);
+const SingerManagement = (props) => {
+	const confirm = (id) => {
+		console.log(id + ' id xoa');
+		message.success('Xóa thành công');
+	};
 
-		this.state = {
-			dataSingers: {},
-		};
-	}
-	columns = [
+	const cancel = (e) => {
+		console.log(e);
+		message.error('Hủy xóa');
+	};
+
+	const columns = [
 		{
 			title: 'Stt',
+			key: 'Stt',
 			dataIndex: 'id',
-			width: 70,
+			width: 50,
 			render: (text, row, index) => {
-				if (index >= 0) {
-					return <p>{index + 1}</p>;
-				}
+				// if (index >= 0) return <p>{index + 1}</p>;
+				const stt = (currentPage - 1) * 20 + index + 1;
+				return <p>{stt}</p>;
 			},
 		},
 		{
-			title: 'Avatar',
-			dataIndex: 'image.imgLocation',
-			width: 150,
-			render: (thumbnail) => <Avatar src={<Image src={thumbnail} />} />,
+			title: 'Image',
+			key: 'Image',
+			dataIndex: 'image',
+			width: 100,
+			render: (image) => <Image width={100} src={image} />,
 		},
 		{
-			title: 'Tên',
+			title: 'Banner',
+			key: 'banner',
+			dataIndex: 'banner',
+			width: 200,
+			render: (banner) => <Image height={100} src={banner} />,
+		},
+		{
+			title: 'Tên ca sĩ',
+			key: 'Tên ca sĩ',
 			dataIndex: 'name',
-			width: 250,
+			width: 180,
 		},
 		{
-			title: 'Giới tính',
-			dataIndex: 'gender',
-			width: 150,
+			title: 'Mô tả',
+			key: 'Thể loại',
+			dataIndex: 'category',
+			width: 300,
 		},
 		{
-			title: 'Quốc Gia',
-			dataIndex: 'nationality',
-			width: 150,
+			title: 'Trạng thái',
+			key: 'isActive',
+			dataIndex: 'isActive',
+			width: 100,
+			render: (tags) => (
+				<span>
+					{tags ? (
+						<Tag color={'green'}>{'true'}</Tag>
+					) : (
+						<Tag color={'volcano'}>{'false'}</Tag>
+					)}
+				</span>
+			),
 		},
-		// {
-		// 	title: 'Trạng thái',
-		// 	dataIndex: 'tags',
-		// 	render: (tags) => (
-		// 		<span>
-		// 			{tags ? (
-		// 				<Tag color={'green'}>{'true'}</Tag>
-		// 			) : (
-		// 				<Tag color={'volcano'}>{'false'}</Tag>
-		// 			)}
-		// 		</span>
-		// 	),
-		// },
 		{
 			title: 'Actions',
-			dataIndex: 'name',
-			width: 200,
-			render: (name) => (
+			key: 'Actions',
+			dataIndex: 'id',
+			width: 130,
+			render: (id) => (
 				<div>
 					<Button
 						type="primary"
@@ -72,16 +85,14 @@ class SingerManagement extends React.Component {
 						// 	this.redirectEditPage(id);
 						// }}
 					>
-						<Link
-							to={`/admin/singer-management/editSinger/${name}`}
-						>
+						<Link to={`/admin/song-management/editSong/${id}`}>
 							Sửa
 						</Link>
 					</Button>
 					<Popconfirm
 						title="Xác nhận xóa?"
-						onConfirm={() => this.confirm(name)}
-						onCancel={this.cancel}
+						// onConfirm={() => confirm(id)}
+						// onCancel={cancel()}
 						okText="Yes"
 						cancelText="No"
 					>
@@ -100,55 +111,65 @@ class SingerManagement extends React.Component {
 			),
 		},
 	];
-	componentDidMount() {
-		this.props.getListSingerManager();
-	}
 
-	confirm = (name) => {
-		console.log(name + ' id xoa');
-		message.success('Xóa thành công');
+	useEffect(() => {
+		const payload = { page: 1, limit: 20, query: '' };
+		props.getListSingerManager(payload);
+	}, []);
+	const onChangePagination = (page) => {
+		console.log(page);
+		const payload = { page: page, limit: 20, query: '' };
+		props.getListSingerManager(payload);
 	};
 
-	cancel = (e) => {
-		console.log(e);
-		message.error('Hủy xóa');
-	};
-	render() {
-		const listSinger = this.props.dataSingers ?? [];
-		return (
-			<>
-				<div
-					style={{
-						fontWeight: 700,
-						fontSize: 25,
-						marginBottom: 25,
-					}}
+	const listArtist = props.dataArtist;
+	const currentPage = props.pageTable;
+	const loading = props.loading;
+	const countArtist = props.countArtist;
+
+	return (
+		<div>
+			<div
+				style={{
+					fontWeight: 700,
+					fontSize: 25,
+					marginBottom: 25,
+				}}
+			>
+				Quản lý danh sách ca sĩ
+			</div>
+			<div>
+				<Button
+					type="primary"
+					style={{ float: 'right', margin: '0rem 5rem 1rem' }}
 				>
-					Quản lý danh sách nghệ sĩ
-				</div>
-				<div>
-					<Button
-						type="primary"
-						style={{ float: 'right', margin: '0rem 5rem 1rem' }}
-					>
-						<Link to={`/admin/singer-management/addSinger`}>
-							<PlusOutlined />
-							Thêm bài hát
-						</Link>
-					</Button>
-				</div>
-				<Table
-					columns={this.columns}
-					dataSource={listSinger}
-					pagination={{ pageSize: 50 }}
-					scroll={{ y: 340 }}
-				/>
-			</>
-		);
-	}
-}
+					<Link to={`/admin/song-management/addSong`}>
+						<PlusOutlined />
+						Thêm bài hát
+					</Link>
+				</Button>
+			</div>
+			<Table
+				columns={columns}
+				dataSource={listArtist}
+				pagination={false}
+				loading={loading}
+				rowKey="id"
+			/>
+			<Pagination
+				current={currentPage}
+				onChange={(e) => onChangePagination(e)}
+				total={countArtist}
+				defaultPageSize={20}
+				showSizeChanger={false}
+			/>
+		</div>
+	);
+};
 const mapStateToProps = (state) => ({
-	dataSingers: state.reducerSinger.data.listResult,
+	dataArtist: state.reducerSinger.data.artists,
+	pageTable: state.reducerSinger.data.page,
+	countArtist: state.reducerSinger.data.count,
 	loading: state.reducerSinger.loading,
 	error: state.reducerSinger.error,
 });

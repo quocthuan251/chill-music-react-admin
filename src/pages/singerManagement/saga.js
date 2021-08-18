@@ -6,13 +6,14 @@ import {
 } from './action';
 import * as Api from './service';
 
-function* getDataSinger() {
+function* getDataSinger({ payload }) {
 	try {
-		const { response, error } = yield call(Api.getListSinger);
-		console.log('haha');
+		const { response, error } = yield call(Api.getListSinger, payload);
+		console.log('log in saga nghệ sĩ');
+		console.log(response.data.data);
 		yield put({
 			type: GET_LIST_SINGERS_SUCCESS,
-			data: response.data,
+			data: response.data.data,
 		});
 	} catch (error) {
 		console.log('ERROR: ', error);

@@ -3,7 +3,7 @@ import { Table, Tag, Image } from 'antd';
 import { Button, Tooltip } from 'antd';
 import { FileSearchOutlined, PlusOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { getListAlbum } from './action';
+import { getAllAlbum } from './action';
 import { Link } from 'react-router-dom';
 import { Popconfirm, message } from 'antd';
 
@@ -13,7 +13,8 @@ class AlbumManagement extends React.Component {
 		this.state = {};
 	}
 	componentDidMount() {
-		this.props.getListAlbum();
+		const payload = { page: 1, limit: 20, query: '' };
+		this.props.getAllAlbum(payload);
 	}
 	confirm = (id) => {
 		console.log(id + ' id xoa');
@@ -36,9 +37,9 @@ class AlbumManagement extends React.Component {
 		},
 		{
 			title: 'Image',
-			dataIndex: 'image.imgLocation',
+			dataIndex: 'image',
 			width: 100,
-			render: (avatar) => <Image src={avatar} />,
+			render: (image) => <Image src={image} />,
 		},
 		{
 			title: 'Tên Album',
@@ -114,7 +115,7 @@ class AlbumManagement extends React.Component {
 		},
 	];
 	render() {
-		const listAlbums = this.props.dataAlbums ?? [];
+		const listAlbums = this.props.listAlbums ?? [];
 		return (
 			<div>
 				<div
@@ -148,11 +149,11 @@ class AlbumManagement extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	dataAlbums: state.reducerAlbum.data.listResult,
+	listAlbums: state.reducerAlbum.dataAllAlbum.albums,
 	loading: state.reducerAlbum.loading,
 	error: state.reducerAlbum.error,
 });
 const mapDispatchToProps = {
-	getListAlbum,
+	getAllAlbum,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AlbumManagement);

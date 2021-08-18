@@ -20,3 +20,17 @@ export const getListAlbum = (
 		.then((response) => ({ response }))
 		.catch((error) => ({ error }));
 };
+
+export const getAllAlbum = (payload, method = 'GET') => {
+	const { page, limit, query } = payload;
+	return axios({
+		url: `https://chill-music-nodejs.herokuapp.com/api/albums?page=${page}&limit=${limit}&q=${query}`,
+		method: method,
+		headers: {
+			'content-type': 'application/json',
+			accept: 'application/json',
+		},
+	})
+		.then((response) => ({ response }))
+		.catch((error) => ({ error }));
+};

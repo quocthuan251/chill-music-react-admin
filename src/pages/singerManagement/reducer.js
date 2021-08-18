@@ -6,6 +6,8 @@ import {
 
 const initialState = {
 	data: [],
+	page: 1,
+	count: 0,
 	loading: false,
 	error: '',
 };
@@ -16,7 +18,15 @@ const reducerSinger = (state = initialState, action) => {
 			return { ...state, loading: true, error: '' };
 		}
 		case GET_LIST_SINGERS_SUCCESS: {
-			return { ...state, data: action.data, loading: false };
+			console.log("log in reducer");
+			console.log(action);
+			return {
+				...state,
+				data: action.data,
+				page: action.page,
+				count: action.count,
+				loading: false,
+			};
 		}
 		case GET_LIST_SINGERS_FAIL: {
 			return { ...state, loading: false, error: action.error };

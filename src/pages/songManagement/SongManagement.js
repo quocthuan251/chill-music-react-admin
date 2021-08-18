@@ -1,67 +1,70 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table, Tag, Image } from 'antd';
 import { Button, Tooltip } from 'antd';
 import { FileSearchOutlined, PlusOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { getListSong } from './actions';
+import { getListSong, deleteSongById } from './actions';
 import { Link } from 'react-router-dom';
-import { Popconfirm, message } from 'antd';
+import { Popconfirm, message, Pagination } from 'antd';
 
-class SongManagement extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
-	componentDidMount() {
-		this.props.getListSong();
-	}
-	confirm = (id) => {
+const SongManagement = (props) => {
+	const confirm = (id) => {
 		console.log(id + ' id xoa');
-		message.success('Xóa thành công');
+		props.deleteSongById(id);
+		// message.success('Xóa thành công');
 	};
 
-	cancel = (e) => {
+	const cancel = (e) => {
 		console.log(e);
 		message.error('Hủy xóa');
 	};
 
-	columns = [
+	const columns = [
 		{
 			title: 'Stt',
+			key: 'Stt',
 			dataIndex: 'id',
 			width: 50,
 			render: (text, row, index) => {
-				if (index >= 0) return <p>{index + 1}</p>;
+				// if (index >= 0) return <p>{index + 1}</p>;
+				const stt = (currentPage - 1) * 20 + index + 1;
+				return <p>{stt}</p>;
 			},
 		},
 		{
 			title: 'Image',
-			dataIndex: 'image.imgLocation',
+			key: 'Image',
+			dataIndex: 'image',
 			width: 100,
-			render: (avatar) => <Image src={avatar} />,
+			render: (avatar) => <Image width={100} src={avatar} />,
 		},
 		{
 			title: 'Tên bài hát',
-			dataIndex: 'title',
+			key: 'Tên bài hát',
+			dataIndex: 'name',
 			width: 180,
 		},
 		{
 			title: 'Thể loại',
-			dataIndex: 'albums.genreDTO.name',
+			key: 'Thể loại',
+			dataIndex: 'category',
 			width: 120,
 		},
 		{
 			title: 'album',
-			dataIndex: 'albums.name',
+			key: 'album',
+			dataIndex: 'info_extra.category',
 			width: 130,
 		},
 		{
-			title: 'Ca sỹ',
-			dataIndex: 'albums.name',
+			title: 'Ca sĩ',
+			key: 'Ca sĩ',
+			dataIndex: 'singer',
 			width: 130,
 		},
 		{
 			title: 'Download',
+			key: 'Download',
 			dataIndex: 'downloadPremit',
 			width: 100,
 			render: (tags) => (
@@ -76,7 +79,8 @@ class SongManagement extends React.Component {
 		},
 		{
 			title: 'Actions',
-			dataIndex: 'id',
+			key: 'Actions',
+			dataIndex: '_id',
 			width: 130,
 			render: (id) => (
 				<div>
@@ -93,8 +97,8 @@ class SongManagement extends React.Component {
 					</Button>
 					<Popconfirm
 						title="Xác nhận xóa?"
-						onConfirm={() => this.confirm(id)}
-						onCancel={this.cancel}
+						onConfirm={() => confirm(id)}
+						// onCancel={cancel()}
 						okText="Yes"
 						cancelText="No"
 					>
@@ -113,46 +117,71 @@ class SongManagement extends React.Component {
 			),
 		},
 	];
-	render() {
-		const listSong = this.props.dataSongs ?? [];
-		return (
-			<div>
-				<div
-					style={{
-						fontWeight: 700,
-						fontSize: 25,
-						marginBottom: 25,
-					}}
-				>
-					Quản lý danh sách bài hát
-				</div>
-				<div>
-					<Button
-						type="primary"
-						style={{ float: 'right', margin: '0rem 5rem 1rem' }}
-					>
-						<Link to={`/admin/song-management/addSong`}>
-							<PlusOutlined />
-							Thêm bài hát
-						</Link>
-					</Button>
-				</div>
-				<Table
-					columns={this.columns}
-					dataSource={listSong}
-					pagination={{ pageSize: 50 }}
-					scroll={{ y: 340 }}
-				/>
+
+	useEffect(() => {
+		const payload = { page: 1, limit: 20, query: '' };
+		props.getListSong(payload);
+	}, []);
+	const onChangePagination = (page) => {
+		console.log(page);
+		const payload = { page: page, limit: 20, query: '' };
+		props.getListSong(payload);
+		// setCurrentPage(page);
+	};
+
+	const listSong = props.dataSongs;
+	const currentPage = props.pageTable;
+	const loading = props.loading;
+	const countSongs = props.countSongs;
+
+	return (
+		<div>
+			<div
+				style={{
+					fontWeight: 700,
+					fontSize: 25,
+					marginBottom: 25,
+				}}
+			>
+				Quản lý danh sách bài hát
 			</div>
-		);
-	}
-}
+			<div>
+				<Button
+					type="primary"
+					style={{ float: 'right', margin: '0rem 5rem 1rem' }}
+				>
+					<Link to={`/admin/song-management/addSong`}>
+						<PlusOutlined />
+						Thêm bài hát
+					</Link>
+				</Button>
+			</div>
+			<Table
+				columns={columns}
+				dataSource={listSong}
+				pagination={false}
+				loading={loading}
+				rowKey="_id"
+			/>
+			<Pagination
+				current={currentPage}
+				onChange={(e) => onChangePagination(e)}
+				total={countSongs}
+				defaultPageSize={20}
+				showSizeChanger={false}
+			/>
+		</div>
+	);
+};
 const mapStateToProps = (state) => ({
-	dataSongs: state.reducerSong.data.listResult,
+	dataSongs: state.reducerSong.data.songs,
+	pageTable: state.reducerSong.data.page,
+	countSongs: state.reducerSong.data.count,
 	loading: state.reducerSong.loading,
 	error: state.reducerSong.error,
 });
 const mapDispatchToProps = {
 	getListSong,
+	deleteSongById,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SongManagement);

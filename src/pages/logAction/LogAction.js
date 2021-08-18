@@ -63,7 +63,7 @@ const data = [
 	},
 	{
 		key: '2',
-		name: 'Vỹ',
+		name: 'Thường',
 		age: '2020/12/12 10:15:35',
 		address: 'Select * from "songs"',
 		tags: ['Delete'],
